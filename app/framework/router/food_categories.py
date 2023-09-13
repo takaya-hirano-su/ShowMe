@@ -22,6 +22,14 @@ def register_food_category():
 @food_categories_router.route('/', methods=['GET'])
 def get_food_categories():
 
+    SessionClass=sessionmaker(engine)
+    session=SessionClass()
+
+    food_categories=[]
+    for food_category in session.query(FoodCategory).all():
+        food_categories.append({"id":food_category.id,"name":food_category.name})
+
+
     return jsonify({"food_categories":food_categories})
 
 @food_categories_router.route('/<food_category_id>', methods=['GET'])
