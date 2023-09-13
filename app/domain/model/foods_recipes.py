@@ -8,12 +8,8 @@ from infra.settings import Base
 
 class FoodsRecipe(Base):
     __tablename__ = "foods_recipes"
-    recipe_id = Column(
-        "recipe_id", Integer, primary_key=True, ForeignKey("recipes.id")
-    )
-    food_id = Column(
-        "food_id", Integer, primary_key=True, ForeignKey("foods.id")
-    )
+    recipe_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4, ForeignKey("recipes.id"))
+    food_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4, ForeignKey("foods.id"))
     amount = Column("amount", Integer, nullable=False)
 
     def __repr__(self):
