@@ -1,7 +1,7 @@
 {
   "dockerComposeFile": ["../compose.yaml", "./compose.yaml"],
   "service": "app",
-  "workspaceFolder": "/backend/app",
+  "workspaceFolder": "/Team-3-3/app",
   "postCreateCommand": "flask --debug run --host=0.0.0.0 --port=8000",
   "customizations": {
     "vscode": {

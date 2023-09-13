@@ -1,6 +1,6 @@
 services:
   app:
     command: sleep infinity
-    working_dir: /backend/app
+    working_dir: /Team-3-3/app
     volumes:
-      - .:/backend
+      - .:/Team-3-3
