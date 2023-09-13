@@ -13,7 +13,6 @@ class Food(Base):
     icon_url = Column("icon_url", String)
     food_category_id = Column(
         UUID(as_uuid=True),
-        String,
         ForeignKey("food_category.id"),
         nullable=False,
         default=uuid4,
