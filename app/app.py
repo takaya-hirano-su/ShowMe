@@ -10,6 +10,7 @@ import framework.router.recipes_suggestions as recipes_suggestions_router
 import framework.router.users as users_router
 
 app = Flask(__name__)
+app.json.ensure_ascii = False #jsonifyで日本語出力を可能にする
 
 app.register_blueprint(users_router.users_router)
 app.register_blueprint(food_categories_router.food_categories_router)

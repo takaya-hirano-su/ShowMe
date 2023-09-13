@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from infra.settings import Base
 
 
-class Food_categories(Base):
+class FoodCategory(Base):
     __tablename__ = "food_categories"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     name = Column("name", String, unique=True, nullable=False)
@@ -17,5 +17,4 @@ class Food_categories(Base):
 
 if __name__ == "__main__":
     from infra.settings import engine
-
     Base.metadata.create_all(bind=engine)
