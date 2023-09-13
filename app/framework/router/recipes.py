@@ -5,6 +5,7 @@ recipes_router = Blueprint("recipes_router", __name__, url_prefix="/recipes")
 
 
 @recipes_router.route("/", methods=["POST"])
+@jwt_required()
 def register_recipe():
     return "register recipe"
 
