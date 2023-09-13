@@ -25,9 +25,12 @@ def get_food_categories():
     SessionClass=sessionmaker(engine)
     session=SessionClass()
 
-    food_categories=[]
-    for food_category in session.query(FoodCategory).all():
-        food_categories.append({"id":food_category.id,"name":food_category.name})
+    try:
+        food_categories=[]
+        for food_category in session.query(FoodCategory).all():
+            food_categories.append({"id":food_category.id,"name":food_category.name})
+    except Exception as e:
+        return jsonify({"error":"Internal Server Error"})
 
 
     return jsonify({"food_categories":food_categories})
