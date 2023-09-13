@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import Column, DateTime, String,Integer,ForeignKey,Float
+from sqlalchemy import Column, DateTime, String, Integer, ForeignKey, Float
 from sqlalchemy.dialects.postgresql import UUID
 
 from infra.settings import Base
@@ -10,10 +10,22 @@ class UserFood(Base):
     __tablename__ = "user_foods"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     name = Column("name", String, nullable=False)
-    user_id=Column("user_id",Integer,ForeignKey("user.id"))
-    food_id=Column("food_id",Integer,ForeignKey("food.id"))
-    amount=Column("amount",Float,server_default=0.0,comment="単位無し. 数量のみ") 
-    deadline=Column("deadline", DateTime)
+    user_id = Column(
+        UUID(as_uuid=True),
+        Integer,
+        ForeignKey("user.id"),
+        nullable=False,
+        default=uuid4,
+    )
+    food_id = Column(
+        UUID(as_uuid=True),
+        Integer,
+        ForeignKey("food.id"),
+        nullable=False,
+        default=uuid4,
+    )
+    amount = Column("amount", Float, server_default=0.0, comment="単位無し. 数量のみ")
+    deadline = Column("deadline", DateTime)
     created_at = Column("created_at", DateTime, server_default="now()")
     deleted_at = Column("deleted_at", DateTime)
     expired_at = Column("expired_at", DateTime)
