@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from infra.settings import Base
 
 
-class recipe(Base):
+class Recipe(Base):
     __tablename__ = "recipes"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     user_id = Column(UUID(as_uuid=True),ForeignKey('user.id'), nullable=False, default=uuid4)
