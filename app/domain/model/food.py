@@ -14,7 +14,7 @@ class Food(Base):
     food_category_id = Column(
         "food_category_id", Integer, ForeignKey("food_category.id")
     )
-    deadline = Column("deadline", DateTime)
+    deadline = Column("deadline", DateTime, nullable=False)
 
     def __repr__(self):
         return f"<Food(id={self.id}, name={self.name}, icon_url={self.icon_url}, food_category_id={self.food_category_id}, deadline={self.deadline})>"
