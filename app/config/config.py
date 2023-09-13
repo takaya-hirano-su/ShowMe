@@ -11,6 +11,8 @@ class Config:
     POSTGRES_DB: str = os.environ.get("POSTGRES_DB", "postgres")
     APP_PORT: str = os.environ.get("APP_PORT", "8080")
     APP_DEBUG = os.environ.get("APP_DEBUG", False)
+    APP_JWT_SECRET_KEY: str = os.environ.get("APP_JWT_SECRET_KEY", "secret")
+    APP_JWT_ALGORITHM: str = os.environ.get("APP_JWT_ALGORITHM", "HS256")
 
 
 def get_config() -> Config:

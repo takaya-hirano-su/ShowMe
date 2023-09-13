@@ -11,14 +11,18 @@ import framework.router.recipe_categories as recipe_categories_router
 import framework.router.recipes as recipes_router
 import framework.router.recipes_suggestions as recipes_suggestions_router
 import framework.router.users as users_router
+from config.config import get_config
 
 app = Flask(__name__)
 
-app.config["JWT_SECRET_KEY"] = "secret"  # 暗号化に使用するキー
-app.config["JWT_ALGORITHM"] = "HS256"  # 暗号化署名のアルゴリズム
-app.config["JWT_LEEWAY"] = 0  # 有効期限に対する余裕時間
-app.config["JWT_EXPIRATION_DELTA"] = timedelta(seconds=300)  # トークンの有効期間
-app.config["JWT_NOT_BEFORE_DELTA"] = timedelta(seconds=0)  # トークンの使用を開始する相対時間
+
+config = get_config()
+
+app.config["JWT_SECRET_KEY"] = config.APP_JWT_SECRET_KEY
+app.config["JWT_ALGORITHM"] = config.APP_JWT_ALGORITHM
+app.config["JWT_LEEWAY"] = timedelta(seconds=0)
+app.config["JWT_EXPIRATION_DELTA"] = timedelta(seconds=3600)
+app.config["JWT_NOT_BEFORE_DELTA"] = timedelta(seconds=0)
 
 jwt = JWTManager(app)
 
