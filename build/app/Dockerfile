@@ -4,7 +4,7 @@ WORKDIR /app
 
 ENV PYTHONPATH /app
 
-RUN apk update && apk add --no-cache musl-dev gcc make g++ file libpq-dev
+RUN apk update && apk add --no-cache musl-dev gcc make g++ file libpq-dev git
 
 COPY /app/requirements.txt /app/requirements.txt
 
