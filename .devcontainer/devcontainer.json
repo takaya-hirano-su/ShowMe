@@ -1,6 +1,17 @@
 {
   "dockerComposeFile": ["../compose.yaml", "./compose.yaml"],
   "service": "app",
-  "workspaceFolder": "/app",
-  "postCreateCommand": "flask --debug run --host=0.0.0.0 --port=8000"
+  "workspaceFolder": "/backend/app",
+  "postCreateCommand": "flask --debug run --host=0.0.0.0 --port=8000",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "esbenp.prettier-vscode",
+        "ms-python.isort",
+        "ms-python.black-formatter"
+      ]
+    }
+  }
 }
