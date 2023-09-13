@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import Column, DateTime, String, ForeignKey, Integer
+from sqlalchemy import Column, DateTime, String, ForeignKey, Integer, UUID
 from sqlalchemy.dialects.postgresql import UUID
 
 from infra.settings import Base
@@ -12,7 +12,11 @@ class Food(Base):
     name = Column("name", String, nullable=False)
     icon_url = Column("icon_url", String)
     food_category_id = Column(
-        "food_category_id", Integer, ForeignKey("food_category.id")
+        UUID(as_uuid=True),
+        Integer,
+        ForeignKey("food_category.id"),
+        nullable=False,
+        default=uuid4,
     )
     deadline = Column("deadline", DateTime, nullable=False)
 
