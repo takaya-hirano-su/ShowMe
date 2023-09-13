@@ -12,14 +12,12 @@ class UserFood(Base):
     name = Column("name", String, nullable=False)
     user_id = Column(
         UUID(as_uuid=True),
-        Integer,
         ForeignKey("user.id"),
         nullable=False,
         default=uuid4,
     )
     food_id = Column(
         UUID(as_uuid=True),
-        Integer,
         ForeignKey("food.id"),
         nullable=False,
         default=uuid4,
