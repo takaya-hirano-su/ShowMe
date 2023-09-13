@@ -1,9 +1,3 @@
-# Table foods_recipes {
-#   recipe_id uuid [pk,ref: > recipes.id]
-#   food_id uuid [pk,ref: > foods.id]
-#   amount number
-# }
-
 from uuid import uuid4
 
 from sqlalchemy import Column, DateTime, String
@@ -13,7 +7,7 @@ from infra.settings import Base
 
 
 class RecipeCategory(Base):
-    __tablename__ = "recepi_categories"
+    __tablename__ = "recipe_categories"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     name = Column("name", String, nullable=False)
 
