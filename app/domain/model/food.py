@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import Column, DateTime, String, ForeignKey, Integer, UUID
+from sqlalchemy import Column, DateTime, String, ForeignKey, Integer
 from sqlalchemy.dialects.postgresql import UUID
 
 from infra.settings import Base
