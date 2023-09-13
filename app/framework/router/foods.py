@@ -10,6 +10,6 @@ def register_food():
 def get_foods():
     return 'get foods'
 
-@foods_router.route('/<food_id>', methods=['DELETE'])
+@foods_router.route('/<food_id>', methods=['GET'])
 def get_food(food_id):
     return 'get food ' + food_id
