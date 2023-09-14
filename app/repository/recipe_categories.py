@@ -24,11 +24,14 @@ class RecipeCategoriesRepository:
             recipe_category = (
                 s.query(RecipeCategory)
                 .filter(RecipeCategory.id == recipe_categories_id)
-                .first()
+                .limit(1)
+                .one_or_none()
             )
+            if recipe_category is None:
+                abort(404)
         except Exception:
             s.rollback()
-            abort(404)
+            abort(500)
         finally:
             s.close()
         return recipe_category
