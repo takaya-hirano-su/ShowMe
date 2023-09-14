@@ -25,7 +25,6 @@ def register_recipe_categories():
     SessionClass = sessionmaker(engine)
     session = SessionClass()
 
-    recipe_category_name = request.form["name"]
     json = request.get_json()
     recipe_category_name = json["name"]
 
