@@ -1,3 +1,4 @@
+
 from flask import Blueprint, request, make_response, abort
 from uuid import UUID
 
@@ -104,3 +105,4 @@ def not_found(error):
 @food_categories_router.errorhandler(500)
 def internal_server_error(error):
     return make_response({"error": "Internal Server Error"}, 500)
+

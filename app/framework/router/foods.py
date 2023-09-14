@@ -1,15 +1,20 @@
 from flask import Blueprint
+from flask_jwt_extended import jwt_required
 
-foods_router = Blueprint('foods_router', __name__, url_prefix='/foods')
+foods_router = Blueprint("foods_router", __name__, url_prefix="/foods")
 
-@foods_router.route('/', methods=['POST'])
+
+@foods_router.route("/", methods=["POST"])
+@jwt_required()
 def register_food():
-    return 'register food'
-  
-@foods_router.route('/', methods=['GET'])
-def get_foods():
-    return 'get foods'
+    return "register food"
 
-@foods_router.route('/<food_id>', methods=['GET'])
+
+@foods_router.route("/", methods=["GET"])
+def get_foods():
+    return "get foods"
+
+
+@foods_router.route("/<food_id>", methods=["GET"])
 def get_food(food_id):
-    return 'get food ' + food_id
+    return "get food " + food_id
