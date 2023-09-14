@@ -66,6 +66,7 @@ def get_recipe_categories():
     return make_response(recipe_category_schema.dump(recipe_categories, many=True), 200)
 
 
+
 @recipe_categories_router.route("/<recipe_categories_id>", methods=["GET"])
 def get_recipe_category(recipe_categories_id):
     SessionClass = sessionmaker(engine)

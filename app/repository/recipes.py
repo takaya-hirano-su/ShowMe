@@ -41,6 +41,7 @@ class RecipesRepository:
 
         try:
             s.add(recipe)
+            s.commit() #一旦commitしないと, recipeにIDが振られない
             s.add_all(
                 [
                     RecipeFood(
