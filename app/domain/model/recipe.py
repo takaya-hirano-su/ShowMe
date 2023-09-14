@@ -50,3 +50,20 @@ class RecipeCategorySchema(ma.Schema):
 
 
 recipe_category_schema = RecipeCategorySchema()
+
+
+class RecipeSchema(ma.Schema):
+    class Meta:
+        fields = (
+            "id",
+            "user_id",
+            "title",
+            "thumbnail_url",
+            "recipe_category_id",
+            "description",
+            "is_public",
+            "is_draft",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+        )
