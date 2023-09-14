@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import Column, DateTime, String, ForeignKey, Integer
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 
 from infra.settings import Base
@@ -13,7 +13,7 @@ class Food(Base):
     icon_url = Column("icon_url", String)
     food_category_id = Column(
         UUID(as_uuid=True),
-        ForeignKey("food_category.id"),
+        ForeignKey("food_categories.id"),
         nullable=False,
         default=uuid4,
     )
@@ -21,9 +21,3 @@ class Food(Base):
 
     def __repr__(self):
         return f"<Food(id={self.id}, name={self.name}, icon_url={self.icon_url}, food_category_id={self.food_category_id}, deadline={self.deadline})>"
-
-
-if __name__ == "__main__":
-    from infra.settings import engine
-
-    Base.metadata.create_all(bind=engine)
