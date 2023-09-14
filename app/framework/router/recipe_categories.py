@@ -1,15 +1,16 @@
-from flask import Blueprint, request, make_response, abort
 from uuid import UUID
-from flask_jwt_extended import jwt_required
 
-from infra.settings import engine
+from flask import Blueprint, abort, make_response, request
+from flask_jwt_extended import jwt_required
 from sqlalchemy.orm import sessionmaker
 
-from domain.model.recipe_category import RecipeCategory
+from domain.model.recipe_category import RecipeCategory, recipe_category_schema
+from infra.settings import engine
 
 recipe_categories_router = Blueprint(
     "recipe_categories_router", __name__, url_prefix="/recipe_categories"
 )
+
 
 def is_uuid(s, version=4):
     try:
@@ -55,12 +56,14 @@ def get_recipe_categories():
     try:
         recipe_categories = []
         for recipe_category in session.query(RecipeCategory).all():
-            recipe_categories.append({"id": recipe_category.id, "name": recipe_category.name})
+            recipe_categories.append(
+                {"id": recipe_category.id, "name": recipe_category.name}
+            )
 
     except Exception as e:
         abort(500)
 
-    return make_response({"food_categories": recipe_category}, 200)
+    return make_response(recipe_category_schema.dump(recipe_categories, many=True), 200)
 
 
 @recipe_categories_router.route("/<recipe_categories_id>", methods=["GET"])
@@ -73,7 +76,9 @@ def get_recipe_category(recipe_categories_id):
 
     try:
         recipe_category = (
-            session.query(RecipeCategory).filter_by(id=recipe_categories_id).one_or_none()
+            session.query(RecipeCategory)
+            .filter_by(id=recipe_categories_id)
+            .one_or_none()
         )
 
     except Exception as e:
@@ -82,24 +87,4 @@ def get_recipe_category(recipe_categories_id):
         else:
             abort(500)
 
-    return make_response({"name": recipe_category.name}, 200)
-
-
-@recipe_categories_router.errorhandler(400)
-def bad_request(error):
-    return make_response({"error": "Bad Request"}, 400)
-
-
-@recipe_categories_router.errorhandler(403)
-def forbidden(error):
-    return make_response({"error": "Forbidden"}, 403)
-
-
-@recipe_categories_router.errorhandler(404)
-def not_found(error):
-    return make_response({"error": "Not Found"}, 404)
-
-
-@recipe_categories_router.errorhandler(500)
-def internal_server_error(error):
-    return make_response({"error": "Internal Server Error"}, 500)
+    return make_response(recipe_category_schema.dump(recipe_category), 200)

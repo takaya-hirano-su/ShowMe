@@ -1,8 +1,9 @@
-from domain.model.recipe import Recipe, recipe_category_schema
 from flask import Blueprint, Response, abort, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from infra.settings import session
 from jsonschema import validate
+
+from domain.model.recipe import Recipe, recipe_category_schema
+from infra.settings import session
 from repository.recipes import RecipesRepository
 from util.validate import is_uuid
 from validate.recipes import register_recipe_schema, update_recipe_schema

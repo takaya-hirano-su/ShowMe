@@ -47,7 +47,7 @@ class DishesRepository:
         except Exception as e:
             s.rollback()
             abort(400)
-        if dish.user_id != user_id:
+        if str(dish.user_id) != str(user_id):
             abort(403)
         try:
             s.delete(dish)
@@ -65,10 +65,10 @@ class DishesRepository:
         except Exception as e:
             s.rollback()
             abort(400)
-        if dish.user_id != user_id:
+        if str(dish.user_id) != str(user_id):
             abort(403)
         try:
-            s.query(Dish).filter(Dish.id == dish_id).update({"recipe_id": recipe_id})
+            dish.recipe_id = recipe_id
             s.commit()
         except Exception as e:
             s.rollback()

@@ -1,10 +1,9 @@
-from flask import Blueprint, request, make_response, abort
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import Blueprint, abort, make_response, request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from jsonschema import validate
 
-from infra.settings import session
-
 from domain.model.food import FoodSchema
+from infra.settings import session
 from repository.foods import FoodRepository
 from util.validate import is_uuid
 from validate.foods import register_food_schema
@@ -34,14 +33,14 @@ def register_food():
         json["name"], json["icon_url"], json["food_category_id"], json["deadline"]
     )
 
-    return make_response({"success":"OK"},201)
+    return make_response({"success": "OK"}, 201)
 
 
 @foods_router.route("/", methods=["GET"])
 def get_foods():
     foods = food_repository.get_foods()
 
-    return make_response({"foods":FoodSchema(many=True).dump(foods)},200)
+    return make_response({"foods": FoodSchema(many=True).dump(foods)}, 200)
 
 
 @foods_router.route("/<food_id>", methods=["GET"])
@@ -49,6 +48,6 @@ def get_food(food_id):
     if not is_uuid(food_id):
         abort(400)
 
-    food=food_repository.get_food(food_id)
+    food = food_repository.get_food(food_id)
 
-    return make_response(FoodSchema(many=False).dump(food),200)
+    return make_response(FoodSchema(many=False).dump(food), 200)
