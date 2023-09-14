@@ -30,9 +30,3 @@ class User(Base):
 
     def verify_password(self, password):
         return self.password_hash == password
-
-
-if __name__ == "__main__":
-    from infra.settings import engine
-
-    Base.metadata.create_all(bind=engine)
