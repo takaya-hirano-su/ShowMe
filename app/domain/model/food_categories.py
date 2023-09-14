@@ -13,8 +13,3 @@ class FoodCategory(Base):
 
     def __repr__(self):
         return f"<Food_categories(id={self.id}, name={self.name})>"
-
-
-if __name__ == "__main__":
-    from infra.settings import engine
-    Base.metadata.create_all(bind=engine)

@@ -7,7 +7,7 @@ from flask_marshmallow import Marshmallow
 from config.config import get_config
 
 app = Flask(__name__)
-app.json.ensure_ascii = False #jsonで日本語出力を可能にする
+app.json.ensure_ascii = False  # jsonで日本語出力を可能にする
 
 ma = Marshmallow(app)
 
@@ -20,6 +20,7 @@ app.config["JWT_EXPIRATION_DELTA"] = timedelta(seconds=3600)
 app.config["JWT_NOT_BEFORE_DELTA"] = timedelta(seconds=0)
 
 jwt = JWTManager(app)
+
 
 import framework.router.dishes as dishes_router
 import framework.router.error as error_router
@@ -40,6 +41,10 @@ app.register_blueprint(recipe_categories_router.recipe_categories_router)
 app.register_blueprint(recipes_router.recipes_router)
 app.register_blueprint(recipes_suggestions_router.recipes_suggestions_router)
 app.register_blueprint(login_router.login_router)
+
+from infra.settings import Base, engine
+
+Base.metadata.create_all(bind=engine)
 
 
 @app.route("/")
