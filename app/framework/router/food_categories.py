@@ -44,7 +44,7 @@ def register_food_category():
         else:
             abort(400)
 
-    return make_response({"success": 200}, 200)
+    return make_response({"success": "OK"}, 201)
 
 
 @food_categories_router.route("/", methods=["GET"])
