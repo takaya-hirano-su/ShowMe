@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import Column, DateTime, String, ForeignKey, Integer
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 
 from infra.settings import Base
@@ -27,9 +27,8 @@ class FoodSchema(ma.Schema):
     class Meta:
         fields=("id", "name", "icon_url", "food_category_id","deadline")
 
-food_schema=FoodSchema()
-
 if __name__ == "__main__":
     from infra.settings import engine
 
     Base.metadata.create_all(bind=engine)
+
