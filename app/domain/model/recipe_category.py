@@ -14,3 +14,11 @@ class RecipeCategory(Base):
 
     def __repr__(self):
         return f"<RecipeCategory(id={self.id}, name={self.name})>"
+
+
+class RecipeCategorySchema(ma.Schema):
+    class Meta:
+        fields = ("id", "name")
+
+
+recipe_category_schema = RecipeCategorySchema()
