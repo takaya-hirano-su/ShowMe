@@ -14,7 +14,7 @@ food_repository = FoodRepository(session)
 
 
 @foods_router.route("/", methods=["POST"])
-@jwt_required()
+# @jwt_required()
 def register_food():
     if not request.is_json:
         abort(401)
@@ -26,9 +26,9 @@ def register_food():
     except Exception as e:
         abort(400)
 
-    user_id = get_jwt_identity()
-    if not user_id:
-        abort(400)
+    # user_id = get_jwt_identity()
+    # if not user_id:
+    #     abort(400)
 
     food_repository.post_food(
         json["name"], json["icon_url"], json["food_category_id"], json["deadline"]
