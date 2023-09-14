@@ -56,7 +56,10 @@ def get_food_categories():
             food_categories.append({"id": food_category.id, "name": food_category.name})
 
     except Exception as e:
-        abort(500)
+        if len(food_categories)==0:
+            abort(404)
+        else:
+            abort(500)
 
     return make_response({"food_categories": food_categories}, 200)
 
