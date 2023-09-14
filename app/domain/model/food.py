@@ -4,6 +4,7 @@ from sqlalchemy import Column, DateTime, String, ForeignKey, Integer
 from sqlalchemy.dialects.postgresql import UUID
 
 from infra.settings import Base
+from app import ma
 
 
 class Food(Base):
@@ -22,6 +23,11 @@ class Food(Base):
     def __repr__(self):
         return f"<Food(id={self.id}, name={self.name}, icon_url={self.icon_url}, food_category_id={self.food_category_id}, deadline={self.deadline})>"
 
+class FoodSchema(ma.Schema):
+    class Meta:
+        fields=("id", "name", "icon_url", "food_category_id","deadline")
+
+food_schema=FoodSchema()
 
 if __name__ == "__main__":
     from infra.settings import engine

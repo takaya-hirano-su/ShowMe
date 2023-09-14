@@ -1,83 +1,54 @@
 from flask import Blueprint, request, make_response, abort
-from uuid import UUID
-from flask_jwt_extended import jwt_required
-from datetime import datetime
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from jsonschema import validate
 
 from infra.settings import session
 
-from domain.model.food import Food
+from domain.model.food import FoodSchema
+from repository.foods import FoodRepository
+from util.validate import is_uuid
+from validate.foods import register_food_schema
 
 foods_router = Blueprint("foods_router", __name__, url_prefix="/foods")
-
-
-def is_uuid(s, version=4):
-    try:
-        uuid_obj = UUID(s, version=version)
-    except ValueError:
-        return False
-    return str(uuid_obj) == s
+food_repository = FoodRepository(session)
 
 
 @foods_router.route("/", methods=["POST"])
 @jwt_required()
 def register_food():
-    return "register food"
+    if not request.is_json:
+        abort(401)
+
+    json = request.get_json()
+
+    try:
+        validate(json, register_food_schema)
+    except Exception as e:
+        abort(400)
+
+    user_id = get_jwt_identity()
+    if not user_id:
+        abort(400)
+
+    food_repository.post_food(
+        json["name"], json["icon_url"], json["food_category_id"], json["deadline"]
+    )
+
+    return make_response({"success":"OK"},201)
 
 
 @foods_router.route("/", methods=["GET"])
 def get_foods():
+    foods = food_repository.get_foods()
 
-    test_food=Food(
-        name="にんじん",
-        icon_url="https://media.delishkitchen.tv/article/1100/eco9bggfutt.jpeg?version=1636508482",
-        food_category_id="7efa9f06-6907-4215-b05a-386c1c4d3077",
-        deadline=datetime.now()
-    )
-    session.add(test_food)
-    session.commit()
-
-    try:
-        foods=[]
-        for food in session.query(Food).all():
-            foods.append({
-                "id":food.id,
-                "name":food.name,
-                "icon_url":food.icon_url,
-                "food_category_id":food.food_category_id,
-                "deadline":food.deadline,
-            })
-
-    except Exception as e:
-        session.rollback()
-        abort(500)
-
-    finally:
-        session.query(Food).delete()
-        session.commit()
-        session.close()
-
-    return make_response({"foods":foods},200)
+    return make_response({"foods":FoodSchema(many=True).dump(foods)},200)
 
 
 @foods_router.route("/<food_id>", methods=["GET"])
 def get_food(food_id):
-    return "get food " + food_id
+    if not is_uuid(food_id):
+        abort(400)
 
-@foods_router.errorhandler(400)
-def bad_request(error):
-    return make_response({"error": "Bad Request"}, 400)
+    food=food_repository.get_food(food_id)
 
-
-@foods_router.errorhandler(403)
-def forbidden(error):
-    return make_response({"error": "Forbidden"}, 403)
-
-
-@foods_router.errorhandler(404)
-def not_found(error):
-    return make_response({"error": "Not found"}, 404)
-
-
-@foods_router.errorhandler(500)
-def internal_server_error(error):
-    return make_response({"error": "Internal Server Error"}, 500)
+    return make_response(FoodSchema(many=False).dump(food),200)

@@ -20,20 +20,22 @@ def is_uuid(s, version=4):
 
 
 @food_categories_router.route("/", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def register_food_category():
+
+    s=session()
 
     food_category_name = request.form["name"]
 
     try:
         is_food_category_name = (
-            session.query(FoodCategory)
+            s.query(FoodCategory)
             .filter(FoodCategory.name == food_category_name)
             .limit(1)
-            .first()#one_or_none()
+            .one_or_none()
         )
-        session.add(FoodCategory(name=food_category_name))
-        session.commit()
+        s.add(FoodCategory(name=food_category_name))
+        s.commit()
 
     except Exception as e:
         if not is_food_category_name is None:
@@ -47,9 +49,11 @@ def register_food_category():
 @food_categories_router.route("/", methods=["GET"])
 def get_food_categories():
 
+    s=session()
+
     try:
         food_categories = []
-        for food_category in session.query(FoodCategory).all():
+        for food_category in s.query(FoodCategory).all():
             food_categories.append({"id": food_category.id, "name": food_category.name})
 
     except Exception as e:
@@ -61,9 +65,11 @@ def get_food_categories():
 @food_categories_router.route("/<food_category_id>", methods=["GET"])
 def get_food_category(food_category_id):
 
+    s=session()
+
     try:
         food_category = (
-            session.query(FoodCategory).filter_by(id=food_category_id).one_or_none()
+            s.query(FoodCategory).filter_by(id=food_category_id).one_or_none()
         )
 
     except Exception as e:
