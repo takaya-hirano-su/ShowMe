@@ -2,8 +2,7 @@ from flask import Blueprint, request, make_response, abort
 from uuid import UUID
 from flask_jwt_extended import jwt_required
 
-from infra.settings import engine
-from sqlalchemy.orm import sessionmaker
+from infra.settings import session
 
 from domain.model.food_categories import FoodCategory
 
@@ -23,8 +22,6 @@ def is_uuid(s, version=4):
 @food_categories_router.route("/", methods=["POST"])
 @jwt_required()
 def register_food_category():
-    SessionClass = sessionmaker(engine)
-    session = SessionClass()
 
     food_category_name = request.form["name"]
 
@@ -49,8 +46,6 @@ def register_food_category():
 
 @food_categories_router.route("/", methods=["GET"])
 def get_food_categories():
-    SessionClass = sessionmaker(engine)
-    session = SessionClass()
 
     try:
         food_categories = []
@@ -65,8 +60,6 @@ def get_food_categories():
 
 @food_categories_router.route("/<food_category_id>", methods=["GET"])
 def get_food_category(food_category_id):
-    SessionClass = sessionmaker(engine)
-    session = SessionClass()
 
     try:
         food_category = (
