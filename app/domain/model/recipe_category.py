@@ -15,12 +15,6 @@ class RecipeCategory(Base):
     def __repr__(self):
         return f"<RecipeCategory(id={self.id}, name={self.name})>"
 
-class RecipeCategorySchema(ma.Schema):
-    class Meta:
-        fields = ("id", "name")
-
-recipe_categories_schema = RecipeCategorySchema(many=True)
-
 
 if __name__ == "__main__":
     from infra.settings import engine
