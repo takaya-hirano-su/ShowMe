@@ -3,6 +3,7 @@ from uuid import uuid4
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 
+from app import ma
 from infra.settings import Base
 
 
@@ -29,3 +30,23 @@ class Recipe(Base):
 
     def __repr__(self):
         return f"<Recipe(id={self.id}, user_id={self.user_id}, recipe_category_id={self.recipe_category_id}, title={self.title}, thumbnail_url={self.thumbnail_url}, description={self.description}, is_public={self.is_public}, is_draft={self.is_draft}, created_at={self.created_at}, updated_at={self.updated_at}, deleted_at={self.deleted_at})>"
+
+
+class RecipeCategorySchema(ma.Schema):
+    class Meta:
+        fields = (
+            "id",
+            "user_id",
+            "title",
+            "thumbnail_url",
+            "recipe_category_id",
+            "description",
+            "is_public",
+            "is_draft",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+        )
+
+
+recipe_category_schema = RecipeCategorySchema()
