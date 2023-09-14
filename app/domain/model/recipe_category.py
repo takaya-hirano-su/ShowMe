@@ -3,6 +3,7 @@ from uuid import uuid4
 from sqlalchemy import Column, DateTime, String
 from sqlalchemy.dialects.postgresql import UUID
 
+from app import ma
 from infra.settings import Base
 
 
@@ -13,6 +14,12 @@ class RecipeCategory(Base):
 
     def __repr__(self):
         return f"<RecipeCategory(id={self.id}, name={self.name})>"
+
+class RecipeCategorySchema(ma.Schema):
+    class Meta:
+        fields = ("id", "name")
+
+recipe_categories_schema = RecipeCategorySchema(many=True)
 
 
 if __name__ == "__main__":
