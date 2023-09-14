@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, abort, request
+from flask import Blueprint, Response, abort, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from jsonschema import validate
 
@@ -36,11 +36,18 @@ def get_dishes():
     if not user_id:
         abort(400)
     dishes = dishes_repository.get_dishes(user_id)
-    return Response(
-        status=200,
-        response=dish_category_schema.dumps(dishes, many=True),
-        mimetype="application/json",
-    )
+    response_dishes = {"dishes": []}
+    for dish in dishes:
+        response_dishes["dishes"].append(
+            {
+                "id": dish.id,
+                "recipe_id": dish.recipe_id,
+                "user_id": dish.user_id,
+                "created_at": dish.created_at,
+            }
+        )
+
+    return jsonify(response_dishes)
 
 
 @dishes_router.route("/<dish_id>", methods=["DELETE"])

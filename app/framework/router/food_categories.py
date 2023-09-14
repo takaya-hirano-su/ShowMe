@@ -1,11 +1,11 @@
-from flask import Blueprint, request, make_response, abort
 from uuid import UUID
-from flask_jwt_extended import jwt_required
 
-from infra.settings import engine
+from flask import Blueprint, abort, make_response, request
+from flask_jwt_extended import jwt_required
 from sqlalchemy.orm import sessionmaker
 
 from domain.model.food_categories import FoodCategory
+from infra.settings import engine
 
 food_categories_router = Blueprint(
     "food_categories_router", __name__, url_prefix="/food_categories"
@@ -26,7 +26,10 @@ def register_food_category():
     SessionClass = sessionmaker(engine)
     session = SessionClass()
 
-    food_category_name = request.form["name"]
+    if not request.is_json:
+        abort(400)
+    json = request.get_json()
+    food_category_name = json["name"]
 
     try:
         is_food_category_name = (
@@ -83,23 +86,3 @@ def get_food_category(food_category_id):
             abort(500)
 
     return make_response({"name": food_category.name}, 200)
-
-
-@food_categories_router.errorhandler(400)
-def bad_request(error):
-    return make_response({"error": "Bad Request"}, 400)
-
-
-@food_categories_router.errorhandler(403)
-def forbidden(error):
-    return make_response({"error": "Forbidden"}, 403)
-
-
-@food_categories_router.errorhandler(404)
-def not_found(error):
-    return make_response({"error": "Not found"}, 404)
-
-
-@food_categories_router.errorhandler(500)
-def internal_server_error(error):
-    return make_response({"error": "Internal Server Error"}, 500)
