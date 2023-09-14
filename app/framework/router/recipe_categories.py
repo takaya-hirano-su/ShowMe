@@ -26,6 +26,8 @@ def register_recipe_categories():
     session = SessionClass()
 
     recipe_category_name = request.form["name"]
+    json = request.get_json()
+    recipe_category_name = json["name"]
 
     try:
         is_recipe_category_name = (
