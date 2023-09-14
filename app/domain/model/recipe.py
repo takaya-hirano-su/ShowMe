@@ -29,9 +29,3 @@ class Recipe(Base):
 
     def __repr__(self):
         return f"<Recipe(id={self.id}, user_id={self.user_id}, recipe_category_id={self.recipe_category_id}, title={self.title}, thumbnail_url={self.thumbnail_url}, description={self.description}, is_public={self.is_public}, is_draft={self.is_draft}, created_at={self.created_at}, updated_at={self.updated_at}, deleted_at={self.deleted_at})>"
-
-
-if __name__ == "__main__":
-    from infra.settings import engine
-
-    Base.metadata.create_all(bind=engine)

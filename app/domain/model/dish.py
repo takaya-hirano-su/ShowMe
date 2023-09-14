@@ -28,8 +28,3 @@ class DishCategorySchema(ma.Schema):
 
 
 dish_category_schema = DishCategorySchema()
-
-if __name__ == "__main__":
-    from infra.settings import engine
-
-    Base.metadata.create_all(bind=engine)

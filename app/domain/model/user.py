@@ -12,6 +12,8 @@ from uuid import uuid4
 from sqlalchemy import Column, DateTime, String
 from sqlalchemy.dialects.postgresql import UUID
 
+import bcrypt
+
 from infra.settings import Base
 
 
@@ -29,10 +31,4 @@ class User(Base):
         return f"<User(id={self.id}, name={self.name}, icon_url={self.icon_url}, mail_address={self.mail_address}, password_hash={self.password_hash}, created_at={self.created_at}, deleted_at={self.deleted_at})>"
 
     def verify_password(self, password):
-        return self.password_hash == password
-
-
-if __name__ == "__main__":
-    from infra.settings import engine
-
-    Base.metadata.create_all(bind=engine)
+        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
