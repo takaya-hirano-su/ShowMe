@@ -68,16 +68,16 @@ def get_recipe_category(recipe_categories_id):
     SessionClass = sessionmaker(engine)
     session = SessionClass()
 
+    if not is_uuid(recipe_categories_id):
+        abort(400)
+
     try:
         recipe_category = (
             session.query(RecipeCategory).filter_by(id=recipe_categories_id).one_or_none()
         )
 
     except Exception as e:
-        if not is_uuid(recipe_categories_id):
-            abort(400)
-
-        elif recipe_category is None:
+        if recipe_category is None:
             abort(404)
         else:
             abort(500)
