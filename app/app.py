@@ -16,16 +16,16 @@ config = get_config()
 app.config["JWT_SECRET_KEY"] = config.APP_JWT_SECRET_KEY
 app.config["JWT_ALGORITHM"] = config.APP_JWT_ALGORITHM
 app.config["JWT_LEEWAY"] = timedelta(seconds=0)
-app.config["JWT_EXPIRATION_DELTA"] = timedelta(seconds=3600)
+app.config["JWT_EXPIRATION_DELTA"] = timedelta(seconds=3600000)
 app.config["JWT_NOT_BEFORE_DELTA"] = timedelta(seconds=0)
 
 jwt = JWTManager(app)
 
+
 @jwt.unauthorized_loader
 def unauthorized_response(callback):
-    return jsonify({
-        "error": "Forbidden"
-    }), 403
+    return jsonify({"error": "Forbidden"}), 403
+
 
 import framework.router.dishes as dishes_router
 import framework.router.error as error_router
