@@ -1,9 +1,8 @@
+from domain.model.recipe import Recipe, recipe_category_schema
 from flask import Blueprint, Response, abort, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from jsonschema import validate
-
-from domain.model.recipe import Recipe, recipe_category_schema
 from infra.settings import session
+from jsonschema import validate
 from repository.recipes import RecipesRepository
 from util.validate import is_uuid
 from validate.recipes import register_recipe_schema, update_recipe_schema
@@ -24,11 +23,10 @@ def register_recipe():
     try:
         validate(json, register_recipe_schema)
     except Exception as e:
-        print(e)
-        return abort(400)
+        abort(400)
     user_id = get_jwt_identity()
     if not user_id:
-        return abort(403)
+        abort(403)
 
     title = json["title"]
     thumbnail_url = json["thumbnail_url"]
