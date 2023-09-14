@@ -14,6 +14,7 @@ import framework.router.users as users_router
 from config.config import get_config
 
 app = Flask(__name__)
+app.json.ensure_ascii = False #jsonで日本語出力を可能にする
 
 
 config = get_config()
