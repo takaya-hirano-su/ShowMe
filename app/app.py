@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
 
 import framework.router.dishes as dishes_router
@@ -25,6 +25,12 @@ app.config["JWT_EXPIRATION_DELTA"] = timedelta(seconds=3600)
 app.config["JWT_NOT_BEFORE_DELTA"] = timedelta(seconds=0)
 
 jwt = JWTManager(app)
+
+@jwt.unauthorized_loader
+def unauthorized_response(callback):
+    return jsonify({
+        "error": "Forbidden"
+    }), 403
 
 app.register_blueprint(users_router.users_router)
 app.register_blueprint(food_categories_router.food_categories_router)
