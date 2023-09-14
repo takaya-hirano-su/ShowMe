@@ -1,9 +1,3 @@
-# {
-#   "food_id": "1",
-#   "amount": 5,
-#   "deadline": "2017-07-21T17:32:28Z",
-#   "expired_at": "2020-01-01T17:32:28Z"
-# }
 register_user_food_schema = {
     "type": "object",
     "properties": {
