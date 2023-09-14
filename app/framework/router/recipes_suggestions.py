@@ -40,4 +40,4 @@ def get_recipes_suggestions():
     finally:
         s.close()
 
-    return make_response(RecipeSchema(many=True).dump(recipes), 200)
+    return make_response({"recipes":RecipeSchema(many=True).dump(recipes)}, 200)
