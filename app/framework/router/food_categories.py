@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request, make_response, abort
 from uuid import UUID
 
 from infra.settings import engine
@@ -38,15 +38,11 @@ def register_food_category():
 
     except Exception as e:
         if not is_food_category_name is None:
-            return jsonify(
-                {
-                    "error": f"Forbidden. food_category '{food_category_name}' already exists."
-                }
-            )
+            abort(403)
         else:
-            return jsonify({"error": "Bad Request"})
+            abort(400)
 
-    return jsonify({"success": 200})
+    return make_response({"success": 200}, 200)
 
 
 @food_categories_router.route("/", methods=["GET"])
@@ -58,10 +54,11 @@ def get_food_categories():
         food_categories = []
         for food_category in session.query(FoodCategory).all():
             food_categories.append({"id": food_category.id, "name": food_category.name})
-    except Exception as e:
-        return jsonify({"error": "Internal Server Error"})
 
-    return jsonify({"food_categories": food_categories})
+    except Exception as e:
+        abort(500)
+
+    return make_response({"food_categories": food_categories}, 200)
 
 
 @food_categories_router.route("/<food_category_id>", methods=["GET"])
@@ -76,12 +73,31 @@ def get_food_category(food_category_id):
 
     except Exception as e:
         if not is_uuid(food_category_id):
-            return jsonify({"error": "Bad Request"})
+            abort(400)
 
         elif food_category is None:
-            return jsonify({"error": "Not found"})
-
+            abort(404)
         else:
-            return jsonify({"error": "Internal Server Error"})
+            abort(500)
 
-    return jsonify({"name": food_category.name})
+    return make_response({"name": food_category.name}, 200)
+
+
+@food_categories_router.errorhandler(400)
+def bad_request(error):
+    return make_response({"error": "Bad Request"}, 400)
+
+
+@food_categories_router.errorhandler(403)
+def forbidden(error):
+    return make_response({"error": "Forbidden"}, 403)
+
+
+@food_categories_router.errorhandler(404)
+def not_found(error):
+    return make_response({"error": "Not found"}, 404)
+
+
+@food_categories_router.errorhandler(500)
+def internal_server_error(error):
+    return make_response({"error": "Internal Server Error"}, 500)
