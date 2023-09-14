@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
 from flask_marshmallow import Marshmallow
 
@@ -21,6 +21,11 @@ app.config["JWT_NOT_BEFORE_DELTA"] = timedelta(seconds=0)
 
 jwt = JWTManager(app)
 
+@jwt.unauthorized_loader
+def unauthorized_response(callback):
+    return jsonify({
+        "error": "Forbidden"
+    }), 403
 
 import framework.router.dishes as dishes_router
 import framework.router.error as error_router
