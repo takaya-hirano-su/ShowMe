@@ -1,5 +1,6 @@
 from flask import Blueprint, request, make_response, abort
 from uuid import UUID
+from flask_jwt_extended import jwt_required
 
 from infra.settings import engine
 from sqlalchemy.orm import sessionmaker
@@ -20,6 +21,7 @@ def is_uuid(s, version=4):
 
 
 @food_categories_router.route("/", methods=["POST"])
+@jwt_required()
 def register_food_category():
     SessionClass = sessionmaker(engine)
     session = SessionClass()
