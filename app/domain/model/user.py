@@ -32,8 +32,3 @@ class User(Base):
 
     def verify_password(self, password):
         return bcrypt.checkpw(password.encode('utf-8'), self.password_hash.encode('utf-8'))
-
-
-from infra.settings import engine
-
-Base.metadata.create_all(bind=engine)

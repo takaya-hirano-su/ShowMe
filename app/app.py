@@ -2,19 +2,14 @@ from datetime import timedelta
 
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
+from flask_marshmallow import Marshmallow
 
-import framework.router.dishes as dishes_router
-import framework.router.food_categories as food_categories_router
-import framework.router.foods as foods_router
-import framework.router.login as login_router
-import framework.router.recipe_categories as recipe_categories_router
-import framework.router.recipes as recipes_router
-import framework.router.recipes_suggestions as recipes_suggestions_router
-import framework.router.users as users_router
 from config.config import get_config
 
 app = Flask(__name__)
+app.json.ensure_ascii = False  # jsonで日本語出力を可能にする
 
+ma = Marshmallow(app)
 
 config = get_config()
 
@@ -32,6 +27,17 @@ def unauthorized_response(callback):
         "error": "Forbidden"
     }), 403
 
+import framework.router.dishes as dishes_router
+import framework.router.error as error_router
+import framework.router.food_categories as food_categories_router
+import framework.router.foods as foods_router
+import framework.router.login as login_router
+import framework.router.recipe_categories as recipe_categories_router
+import framework.router.recipes as recipes_router
+import framework.router.recipes_suggestions as recipes_suggestions_router
+import framework.router.users as users_router
+
+app.register_blueprint(error_router.error_router)
 app.register_blueprint(users_router.users_router)
 app.register_blueprint(food_categories_router.food_categories_router)
 app.register_blueprint(foods_router.foods_router)
@@ -40,6 +46,10 @@ app.register_blueprint(recipe_categories_router.recipe_categories_router)
 app.register_blueprint(recipes_router.recipes_router)
 app.register_blueprint(recipes_suggestions_router.recipes_suggestions_router)
 app.register_blueprint(login_router.login_router)
+
+from infra.settings import Base, engine
+
+Base.metadata.create_all(bind=engine)
 
 
 @app.route("/")
