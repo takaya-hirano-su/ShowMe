@@ -60,7 +60,7 @@ def get_recipe_categories():
     except Exception as e:
         abort(500)
 
-    return make_response({"food_categories": recipe_category}, 200)
+    return make_response({"food_categories": recipe_categories}, 200)
 
 
 @recipe_categories_router.route("/<recipe_categories_id>", methods=["GET"])
